@@ -19,6 +19,7 @@ const camera = new THREE.PerspectiveCamera(
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#bg'),
 });
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Create a cube
 const geometry = new THREE.BoxGeometry();
@@ -29,16 +30,20 @@ cube.position.x = 20;
 cube.rotation.x = -15;
 cube.rotation.y = -.8;
 
+
 //Lights
 const ambientLight = new THREE.AmbientLight(0xffffff);
 ambientLight.position.set(25, -15, -400);
+scene.add(ambientLight);
 
-// Add controls
-const controls = new OrbitControls(camera, renderer.domElement);
-camera.position.z = 3;
+// Position the camera farther back and slightly above the cube
+camera.position.set(25, 10, 30);
+camera.lookAt(cube.position);
 
-
+// Add cube and controls
 scene.add(cube);
+const controls = new OrbitControls(camera, renderer.domElement);
+
 
 // Animation loop
 function animate() {
