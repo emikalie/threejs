@@ -6,6 +6,8 @@ import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/l
 
 // Create a scene
 const scene = new THREE.Scene();
+// Set background color
+scene.background = new THREE.Color(0x1e1e1e);
 
 // Create a camera
 const camera = new THREE.PerspectiveCamera(
@@ -22,6 +24,8 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+window.dispatchEvent(new Event('resize'));
+
 
 // Create a cube
 const geometry = new THREE.BoxGeometry();
@@ -32,14 +36,26 @@ cube.position.x = 20;
 cube.rotation.x = -15;
 cube.rotation.y = -.8;
 
+// Create a red sphere next to the cube
+const sphereGeometry = new THREE.SphereGeometry(3, 32, 32);
+const sphereMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+sphere.position.set(-10, 0, 0);
+scene.add(sphere);
 
-//Lights
-const ambientLight = new THREE.AmbientLight(0xffffff);
-ambientLight.position.set(25, -15, -400);
+
+// Add soft ambient light to the scene
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambientLight);
 
+// Added a point light to brighten the scene
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(10, 10, 10);
+scene.add(pointLight);
+
+
 // Position the camera farther back and slightly above the cube
-camera.position.set(25, 10, 30);
+cube.position.set(5, 0, 0);
 camera.lookAt(cube.position);
 
 // Add cube and controls
